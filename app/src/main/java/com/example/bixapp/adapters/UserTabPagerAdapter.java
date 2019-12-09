@@ -8,28 +8,32 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.bixapp.R;
-import com.example.bixapp.views.FrgAlbums;
-import com.example.bixapp.views.FrgPosts;
+import com.example.bixapp.views.FrgAlbum;
+import com.example.bixapp.views.FrgPost;
 
 public class UserTabPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.posts, R.string.albumes};
     private final Context context;
+    private int userId;
 
     public UserTabPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         this.context = context;
     }
 
-
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return FrgAlbums.newInstance();
+                FrgPost frgPost = FrgPost.newInstance();
+                frgPost.setUserId(userId);
+                return frgPost;
             case 1:
-                return FrgPosts.newInstance();
+                FrgAlbum frgAlbum = FrgAlbum.newInstance();
+                frgAlbum.setUserId(userId);
+                return frgAlbum;
             default:
                 return null;
         }
@@ -44,5 +48,9 @@ public class UserTabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return 2;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

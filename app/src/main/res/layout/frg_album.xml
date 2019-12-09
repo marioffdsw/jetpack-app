@@ -11,16 +11,16 @@
         tools:layout_editor_absoluteY="69dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvPosts"
+            android:id="@+id/rvAlbum"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/row_user" />
 
         <ProgressBar
-            android:id="@+id/pbar_posts"
+            android:id="@+id/pbar_albums"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/rvPosts"
+            android:layout_alignBottom="@id/rvAlbum"
             android:paddingBottom="10dp" />
     </RelativeLayout>
 

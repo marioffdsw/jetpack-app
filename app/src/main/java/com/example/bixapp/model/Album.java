@@ -3,51 +3,37 @@ package com.example.bixapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
-public class Post implements Parcelable {
+public class Album implements Parcelable {
 
     private int id;
     @SerializedName("user_id")
     private String userId;
     private String title;
-    private String body;
     @SerializedName("_links")
     private Map<String, Link> links;
 
-    protected Post(Parcel in) {
+    protected Album(Parcel in) {
         id = in.readInt();
         userId = in.readString();
         title = in.readString();
-        body = in.readString();
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(userId);
-        parcel.writeString(title);
-        parcel.writeString(body);
-    }
-
-    public static final Creator<Post> CREATOR = new Creator<Post>() {
+    public static final Creator<Album> CREATOR = new Creator<Album>() {
         @Override
-        public Post createFromParcel(Parcel in) {
-            return new Post(in);
+        public Album createFromParcel(Parcel in) {
+            return new Album(in);
         }
 
         @Override
-        public Post[] newArray(int size) {
-            return new Post[size];
+        public Album[] newArray(int size) {
+            return new Album[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
     public int getId() {
         return id;
@@ -73,14 +59,6 @@ public class Post implements Parcelable {
         this.title = title;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public Map<String, Link> getLinks() {
         return links;
     }
@@ -89,5 +67,15 @@ public class Post implements Parcelable {
         this.links = links;
     }
 
-}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(userId);
+        parcel.writeString(title);
+    }
+}

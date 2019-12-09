@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface UserInterface {
 
     @GET("users")
-    Call<ResponseBody> getAllUsers(@Query("_format") String format,
+    Call<ResponseBody> getAll(@Query("_format") String format,
                                           @Query("page") Integer page,
                                           @Query("access-token") String token
 

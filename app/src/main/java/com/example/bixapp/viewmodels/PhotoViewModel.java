@@ -4,11 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.bixapp.model.Album;
+import com.example.bixapp.model.Photo;
 import com.example.bixapp.model.ApiResponse;
 import com.example.bixapp.model.ErrorResponse;
-import com.example.bixapp.model.Post;
-import com.example.bixapp.network.AlbumInterface;
+import com.example.bixapp.network.PhotoInterface;
 import com.example.bixapp.network.RetrofitClientInstance;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,21 +22,21 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class AlbumViewModel extends ViewModel {
+public class PhotoViewModel extends ViewModel {
 
-    private MutableLiveData<List<Album>> albums;
+    private MutableLiveData<List<Photo>> photos;
     private MutableLiveData<ErrorResponse> error;
     private MutableLiveData<Boolean> isLoading;
 
-    public AlbumViewModel() {
-        this.albums = new MutableLiveData<>();
+    public PhotoViewModel() {
+        this.photos = new MutableLiveData<>();
         this.error = new MutableLiveData<>();
         this.isLoading = new MutableLiveData<>();
         this.isLoading.setValue(false);
     }
 
-    public LiveData<List<Album>> getAlbums() {
-        return albums;
+    public LiveData<List<Photo>> getPhotos() {
+        return photos;
     }
 
     public LiveData<Boolean> getIsLoading() {
@@ -50,7 +49,7 @@ public class AlbumViewModel extends ViewModel {
 
     public void loadPosts(int userId) {
         Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
-        AlbumInterface pett = retrofitInstance.create(AlbumInterface.class);
+        PhotoInterface pett = retrofitInstance.create(PhotoInterface.class);
 
         isLoading.setValue(true);
         Call<ResponseBody> call = pett.getAll( "json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", userId);
@@ -61,16 +60,16 @@ public class AlbumViewModel extends ViewModel {
                     String responseJson = responseBody.body().string();
                     Gson gson = new Gson();
                     if (responseBody.code() == 200) {
-                        Type type = new TypeToken<ApiResponse<List<Album>>>() {
+                        Type type = new TypeToken<ApiResponse<List<Photo>>>() {
                         }.getType();
-                        ApiResponse<List<Album>> response = gson.fromJson(responseJson, type);
+                        ApiResponse<List<Photo>> response = gson.fromJson(responseJson, type);
 
-                        if (getAlbums().getValue() == null) {
-                            albums.setValue(response.result);
+                        if (getPhotos().getValue() == null) {
+                            photos.setValue(response.result);
                         } else {
-                            List<Album> copy = getAlbums().getValue();
+                            List<Photo> copy = getPhotos().getValue();
                             copy.addAll(response.result);
-                            albums.setValue(copy);
+                            photos.setValue(copy);
                         }
                     } else {
                         Type type = new TypeToken<ApiResponse<ErrorResponse>>() {

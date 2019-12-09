@@ -4,11 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.bixapp.model.Album;
 import com.example.bixapp.model.ApiResponse;
 import com.example.bixapp.model.ErrorResponse;
-import com.example.bixapp.model.Post;
-import com.example.bixapp.network.AlbumInterface;
+import com.example.bixapp.model.Comment;
+import com.example.bixapp.network.CommentInterface;
 import com.example.bixapp.network.RetrofitClientInstance;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,21 +22,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class AlbumViewModel extends ViewModel {
-
-    private MutableLiveData<List<Album>> albums;
+public class CommentViewModel extends ViewModel {
+    private MutableLiveData<List<Comment>> comments;
     private MutableLiveData<ErrorResponse> error;
     private MutableLiveData<Boolean> isLoading;
 
-    public AlbumViewModel() {
-        this.albums = new MutableLiveData<>();
+    public CommentViewModel() {
+        this.comments = new MutableLiveData<>();
         this.error = new MutableLiveData<>();
         this.isLoading = new MutableLiveData<>();
         this.isLoading.setValue(false);
     }
 
-    public LiveData<List<Album>> getAlbums() {
-        return albums;
+    public LiveData<List<Comment>> getComments() {
+        return comments;
     }
 
     public LiveData<Boolean> getIsLoading() {
@@ -48,12 +46,12 @@ public class AlbumViewModel extends ViewModel {
         return error;
     }
 
-    public void loadPosts(int userId) {
+    public void loadComments(int userId) {
         Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
-        AlbumInterface pett = retrofitInstance.create(AlbumInterface.class);
+        CommentInterface pett = retrofitInstance.create(CommentInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll( "json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", userId);
+        Call<ResponseBody> call = pett.getAll("json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseBody) {
@@ -61,16 +59,16 @@ public class AlbumViewModel extends ViewModel {
                     String responseJson = responseBody.body().string();
                     Gson gson = new Gson();
                     if (responseBody.code() == 200) {
-                        Type type = new TypeToken<ApiResponse<List<Album>>>() {
+                        Type type = new TypeToken<ApiResponse<List<Comment>>>() {
                         }.getType();
-                        ApiResponse<List<Album>> response = gson.fromJson(responseJson, type);
+                        ApiResponse<List<Comment>> response = gson.fromJson(responseJson, type);
 
-                        if (getAlbums().getValue() == null) {
-                            albums.setValue(response.result);
+                        if (getComments().getValue() == null) {
+                            comments.setValue(response.result);
                         } else {
-                            List<Album> copy = getAlbums().getValue();
+                            List<Comment> copy = getComments().getValue();
                             copy.addAll(response.result);
-                            albums.setValue(copy);
+                            comments.setValue(copy);
                         }
                     } else {
                         Type type = new TypeToken<ApiResponse<ErrorResponse>>() {

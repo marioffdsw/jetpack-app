@@ -100,4 +100,11 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_frm_tabs">FrmTabs</string>
 
+    <string name="title_activity_frm_photo_album">FrmPhotoAlbum</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="return_button">Regresar</string>
+
+    <string name="title_activity_fullscreen_activitydel">FullscreenActivitydel</string>
+
 </resources>

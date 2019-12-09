@@ -25,12 +25,14 @@ public class FrmUserTabs extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         TextView title = findViewById(R.id.titleTab);
 
-        UserTabPagerAdapter sectionsPagerAdapter = new UserTabPagerAdapter(this, getSupportFragmentManager());
-        viewPager.setAdapter(sectionsPagerAdapter);
-        tabs.setupWithViewPager(viewPager);
-
         User user = getIntent().getExtras().getParcelable("user");
         title.setText(user.getFullName());
+
+        UserTabPagerAdapter sectionsPagerAdapter = new UserTabPagerAdapter(this, getSupportFragmentManager());
+        sectionsPagerAdapter.setUserId(user.getId());
+        viewPager.setAdapter(sectionsPagerAdapter);
+
+        tabs.setupWithViewPager(viewPager);
 
     }
 }

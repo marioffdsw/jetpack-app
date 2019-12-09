@@ -65,7 +65,7 @@ public class UserViewModel extends ViewModel {
         UserInterface pett = retrofitInstance.create(UserInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAllUsers("json", getPage().getValue(), "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7");
+        Call<ResponseBody> call = pett.getAll("json", getPage().getValue(), "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7");
         call.enqueue(new Callback<ResponseBody>() {
 
             @Override

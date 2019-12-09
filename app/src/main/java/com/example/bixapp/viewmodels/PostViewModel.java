@@ -32,10 +32,9 @@ public class PostViewModel extends ViewModel {
         this.error = new MutableLiveData<>();
         this.isLoading = new MutableLiveData<>();
         this.isLoading.setValue(false);
-        loadPosts();
     }
 
-    public LiveData<List<Post>> getUsers() {
+    public LiveData<List<Post>> getPosts() {
         return posts;
     }
 
@@ -44,19 +43,15 @@ public class PostViewModel extends ViewModel {
     }
 
     public LiveData<ErrorResponse> getError() {
-        if (error == null) {
-            error = new MutableLiveData<>();
-        }
         return error;
     }
 
-
-    private void loadPosts() {
+    public void loadPosts(int userId) {
         Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
         PostInterface pett = retrofitInstance.create(PostInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAllUsers("json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7");
+        Call<ResponseBody> call = pett.getAll("json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseBody) {
@@ -68,10 +63,10 @@ public class PostViewModel extends ViewModel {
                         }.getType();
                         ApiResponse<List<Post>> response = gson.fromJson(responseJson, type);
 
-                        if (getUsers().getValue() == null) {
+                        if (getPosts().getValue() == null) {
                             posts.setValue(response.result);
                         } else {
-                            List<Post> copy = getUsers().getValue();
+                            List<Post> copy = getPosts().getValue();
                             copy.addAll(response.result);
                             posts.setValue(copy);
                         }
@@ -95,7 +90,12 @@ public class PostViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                boolean debug = true;
+                ErrorResponse localError = new ErrorResponse();
+                localError.name = "Local Error";
+                localError.message = debug ? t.getMessage() : "Lamentablemente no se pudo realizar la solicitud";
+                error.setValue(localError);
+                isLoading.setValue(false);
             }
         });
     }
