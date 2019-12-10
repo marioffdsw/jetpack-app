@@ -12,17 +12,28 @@
         tools:layout_editor_absoluteX="39dp"
         tools:layout_editor_absoluteY="69dp">
 
+        <android.support.v7.widget.SearchView
+            android:id="@+id/svUser"
+            defaultQueryHint="Buscar..."
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            >
+        </android.support.v7.widget.SearchView>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvUsers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/row_user" />
+            tools:listitem="@layout/row_user"
+            android:layout_below="@id/svUser"
+            />
 
         <ProgressBar
             android:id="@+id/pbar_users"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/rvUsers"
+            android:layout_alignParentBottom="true"
             android:paddingBottom="10dp" />
     </RelativeLayout>
 

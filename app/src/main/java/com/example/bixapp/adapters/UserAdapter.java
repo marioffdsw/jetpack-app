@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,16 +54,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
 
         String avatar = currentUser.getLinks().get("avatar").href;
 
-        final int resourceId = resources.getIdentifier(avatar, "drawable",context.getPackageName());
-        Bitmap bitmap = BitmapFactory.decodeResource(resources,resourceId);
-        RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
-        if(bitmap != null){
-        roundedDrawable.setCornerRadius(bitmap.getHeight());
-        userHolder.imgUser.setImageDrawable(roundedDrawable);
+//        final int resourceId = resources.getIdentifier(avatar, "drawable", context.getPackageName());
+//        Bitmap bitmap = BitmapFactory.decodeResource(resources, resourceId);
+//        RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
+//        if (bitmap != null) {
+//            roundedDrawable.setCornerRadius(bitmap.getHeight());
+//            userHolder.imgUser.setImageDrawable(roundedDrawable);
+//        }
 
-        }
 
-        //new DownloadImageTask(userHolder, currentUser).execute(avatar);
+        new DownloadImageTask(userHolder, currentUser).execute(avatar);
     }
 
     @Override
@@ -71,7 +73,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
 
     public void setUsers(List<User> users) {
         this.users = users;
-        notifyDataSetChanged();
     }
 
     class UserHolder extends RecyclerView.ViewHolder {
@@ -112,7 +113,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 bmp = BitmapFactory.decodeStream(in);
-                userHolder.imgUser.setImageBitmap(bmp);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
@@ -121,17 +121,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
         }
 
         protected void onPostExecute(Bitmap bitmap) {
-//            if (bitmap != null) {
-//                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
-//                roundedDrawable.setCornerRadius(bitmap.getHeight());
-//                userHolder.imgUser.setImageDrawable(roundedDrawable);
-//
-//            } else {
-//                bitmap = BitmapFactory.decodeResource(resources, R.drawable.user);
-//                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
-//                roundedDrawable.setCornerRadius(bitmap.getHeight());
-//                userHolder.imgUser.setImageDrawable(roundedDrawable);
-//            }
+            notifyDataSetChanged();
+            if (bitmap != null) {
+                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
+                roundedDrawable.setCornerRadius(bitmap.getHeight());
+                userHolder.imgUser.setImageDrawable(roundedDrawable);
+                userHolder.txtName.setText(currentUser.getFullName());
+            } else {
+                bitmap = BitmapFactory.decodeResource(resources, R.drawable.user);
+                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
+                roundedDrawable.setCornerRadius(bitmap.getHeight());
+                userHolder.imgUser.setImageDrawable(roundedDrawable);
+
+            }
             currentUser.setPhotoLoad(true);
 
         }

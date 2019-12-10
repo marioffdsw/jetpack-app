@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class FrmUsers extends AppCompatActivity {
 
     private UserViewModel userViewModel;
     private RecyclerView rvUser;
+    private SearchView svUser;
     private UserAdapter userAdapter;
     private boolean isLoading = false;
 
@@ -32,6 +34,7 @@ public class FrmUsers extends AppCompatActivity {
         setContentView(R.layout.activity_frm_users);
 
         final ProgressBar pbarUsers = findViewById(R.id.pbar_users);
+        svUser = findViewById(R.id.svUser);
         rvUser = findViewById(R.id.rvUsers);
 
         rvUser.setLayoutManager(new LinearLayoutManager(this));
@@ -58,9 +61,11 @@ public class FrmUsers extends AppCompatActivity {
         });
 
         initScrollListener();
-
+        initSearchViewListener();
 
     }
+
+
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
@@ -77,6 +82,22 @@ public class FrmUsers extends AppCompatActivity {
         }
     };
 
+
+    private void initSearchViewListener() {
+        svUser.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                userViewModel.setQuery(query);
+                userViewModel.loadUsers();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                return false;
+            }
+        });
+    }
 
     private void initScrollListener() {
         rvUser.addOnScrollListener(new RecyclerView.OnScrollListener() {

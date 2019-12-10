@@ -14,8 +14,8 @@ public interface UserInterface {
     @GET("users")
     Call<ResponseBody> getAll(@Query("_format") String format,
                                           @Query("page") Integer page,
-                                          @Query("access-token") String token
-
+                                          @Query("access-token") String token,
+                                          @Query("last_name") String lastName
     );
 
     @POST

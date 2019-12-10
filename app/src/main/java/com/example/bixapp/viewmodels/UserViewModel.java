@@ -28,15 +28,24 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<ErrorResponse> error;
     private MutableLiveData<Integer> page;
     private MutableLiveData<Boolean> isLoading;
+    private MutableLiveData<String> query;
+
 
     public UserViewModel() {
         this.users = new MutableLiveData<>();
         this.error = new MutableLiveData<>();
         this.isLoading = new MutableLiveData<>();
-        this.isLoading.setValue(false);
+        this.query = new MutableLiveData<>();
         this.page = new MutableLiveData<>();
+
+        this.isLoading.setValue(false);
         this.page.setValue(1);
+        this.query.setValue(null);
         loadUsers();
+    }
+
+    public void setQuery(String query) {
+        this.query.setValue(query);
     }
 
     public MutableLiveData<Integer> getPage() {
@@ -58,14 +67,13 @@ public class UserViewModel extends ViewModel {
         return error;
     }
 
-
     public void loadUsers() {
 
         Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
         UserInterface pett = retrofitInstance.create(UserInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll("json", getPage().getValue(), "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7");
+        Call<ResponseBody> call = pett.getAll("json", getPage().getValue(), "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7",this.query.getValue());
         call.enqueue(new Callback<ResponseBody>() {
 
             @Override
