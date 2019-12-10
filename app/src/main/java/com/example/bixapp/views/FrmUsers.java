@@ -37,6 +37,9 @@ public class FrmUsers extends AppCompatActivity {
         svUser = findViewById(R.id.svUser);
         rvUser = findViewById(R.id.rvUsers);
 
+        svUser.setFocusable(true);
+        svUser.setIconified(false);
+
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         rvUser.setHasFixedSize(true);
 
@@ -87,6 +90,10 @@ public class FrmUsers extends AppCompatActivity {
         svUser.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                String oldQuery = userViewModel.getQuery().getValue();
+                if(query != oldQuery){
+                    userViewModel.resetPage();
+                }
                 userViewModel.setQuery(query);
                 userViewModel.loadUsers();
                 return false;

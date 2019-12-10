@@ -18,6 +18,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bixapp.R;
 import com.example.bixapp.model.User;
 
@@ -62,8 +64,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
 //            userHolder.imgUser.setImageDrawable(roundedDrawable);
 //        }
 
+        System.out.println("jjjjjjjjjjjjjjjj");
+        Glide.with(context)
+                .load(avatar)
+                .apply(RequestOptions.circleCropTransform())
+                .into(userHolder.imgUser);
 
-        new DownloadImageTask(userHolder, currentUser).execute(avatar);
+        //new DownloadImageTask(userHolder.imgUser, currentUser).execute(avatar);
     }
 
     @Override
@@ -73,6 +80,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
 
     public void setUsers(List<User> users) {
         this.users = users;
+        notifyDataSetChanged();
     }
 
     class UserHolder extends RecyclerView.ViewHolder {
@@ -98,10 +106,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        UserHolder userHolder;
+        ImageView userHolder;
         User currentUser;
 
-        public DownloadImageTask(UserHolder userHolder, User currentUser) {
+        public DownloadImageTask(ImageView userHolder, User currentUser) {
             this.userHolder = userHolder;
             this.currentUser = currentUser;
         }
@@ -110,30 +118,29 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
             String urldisplay = urls[0];
             System.out.println(">>>> " + urldisplay);
             Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
+//            try {
+//                InputStream in = new java.net.URL(urldisplay).openStream();
+//                bmp = BitmapFactory.decodeStream(in);
+//            } catch (Exception e) {
+//                Log.e("Error", e.getMessage());
+//                e.printStackTrace();
+//            }
             return bmp;
         }
 
         protected void onPostExecute(Bitmap bitmap) {
-            notifyDataSetChanged();
-            if (bitmap != null) {
-                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
-                roundedDrawable.setCornerRadius(bitmap.getHeight());
-                userHolder.imgUser.setImageDrawable(roundedDrawable);
-                userHolder.txtName.setText(currentUser.getFullName());
-            } else {
-                bitmap = BitmapFactory.decodeResource(resources, R.drawable.user);
-                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
-                roundedDrawable.setCornerRadius(bitmap.getHeight());
-                userHolder.imgUser.setImageDrawable(roundedDrawable);
-
-            }
+//            if (bitmap != null) {
+//                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
+//                roundedDrawable.setCornerRadius(bitmap.getHeight());
+//                userHolder.imgUser.setImageDrawable(roundedDrawable);
+//            } else {
+//                bitmap = BitmapFactory.decodeResource(resources, R.drawable.user);
+//                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap);
+//                roundedDrawable.setCornerRadius(bitmap.getHeight());
+//                userHolder.imgUser.setImageDrawable(roundedDrawable);
+//
+//            }
+//            notifyDataSetChanged();
             currentUser.setPhotoLoad(true);
 
         }

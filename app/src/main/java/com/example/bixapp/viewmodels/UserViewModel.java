@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -27,7 +28,9 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<List<User>> users;
     private MutableLiveData<ErrorResponse> error;
     private MutableLiveData<Integer> page;
+    private MutableLiveData<Integer> totalPages;
     private MutableLiveData<Boolean> isLoading;
+    private MutableLiveData<Boolean> wasReset;
     private MutableLiveData<String> query;
 
 
@@ -37,15 +40,22 @@ public class UserViewModel extends ViewModel {
         this.isLoading = new MutableLiveData<>();
         this.query = new MutableLiveData<>();
         this.page = new MutableLiveData<>();
+        this.totalPages = new MutableLiveData<>();
+        this.wasReset = new MutableLiveData<>();
 
         this.isLoading.setValue(false);
         this.page.setValue(1);
         this.query.setValue(null);
+        this.wasReset.setValue(false);
         loadUsers();
     }
 
     public void setQuery(String query) {
         this.query.setValue(query);
+    }
+
+    public MutableLiveData<String> getQuery() {
+        return query;
     }
 
     public MutableLiveData<Integer> getPage() {
@@ -67,13 +77,17 @@ public class UserViewModel extends ViewModel {
         return error;
     }
 
+    public boolean isQueryEmpty() {
+        return query.getValue() == null || query.getValue().isEmpty();
+    }
+
     public void loadUsers() {
 
         Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
         UserInterface pett = retrofitInstance.create(UserInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll("json", getPage().getValue(), "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7",this.query.getValue());
+        Call<ResponseBody> call = pett.getAll("json", getPage().getValue(), "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", this.query.getValue());
         call.enqueue(new Callback<ResponseBody>() {
 
             @Override
@@ -86,7 +100,13 @@ public class UserViewModel extends ViewModel {
                         }.getType();
                         ApiResponse<List<User>> response = gson.fromJson(responseJson, type);
 
-                        if (getUsers().getValue() == null) {
+                        totalPages.setValue(response._meta.pageCount);
+
+                        if (page.getValue() == 1) {
+                            users.setValue(new ArrayList<User>());
+                            System.out.println("xxxxxxxxxxxxx " + users.getValue().size());
+                            System.out.println("aaaaaaaa " + response.result.size());
+
                             users.setValue(response.result);
                         } else {
                             List<User> copy = getUsers().getValue();
@@ -127,7 +147,16 @@ public class UserViewModel extends ViewModel {
     public Integer loadNextPage() {
         Integer value = page.getValue() + 1;
         page.setValue(value);
-        loadUsers();
+
+        if(totalPages.getValue().compareTo(page.getValue()) > -1 ){
+            loadUsers();
+            return value -1;
+        }
         return page.getValue();
+    }
+
+    public void resetPage() {
+        wasReset.setValue(true);
+        page.setValue(1);
     }
 }
