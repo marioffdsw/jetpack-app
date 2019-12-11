@@ -3,7 +3,6 @@ package com.example.bixapp.views;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,8 +27,28 @@ public class FrgAlbum extends Fragment {
     private boolean isLoading = false;
     private int userId;
     private Context context;
+    private ViewGroup container;
 
     private AlbumViewModel albumViewModel;
+    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+            int position = viewHolder.getAdapterPosition();
+            Album album = albumViewModel.getAlbums().getValue().get(position);
+            System.out.println("jjjjj");
+            Toast.makeText(getActivity(), "Album id" + album.getId(), Toast.LENGTH_SHORT).show();
+
+            FrgPhotos nextFrag = new FrgPhotos();
+            nextFrag.setAlbumId(album.getId());
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(container.getId(), nextFrag, "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
+
+
+        }
+    };
 
     public FrgAlbum() {
     }
@@ -43,11 +62,13 @@ public class FrgAlbum extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.frg_album, container, false);
+        this.container = container;
+
         rvAlbum = view.findViewById(R.id.rvAlbum);
         rvAlbum.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvAlbum.setHasFixedSize(true);
 
-        albumAdapter = new AlbumAdapter(getResources(), getActivity());
+        albumAdapter = new AlbumAdapter();
         albumAdapter.setOnItemClickListener(onItemClickListener);
         rvAlbum.setAdapter(albumAdapter);
 
@@ -68,21 +89,6 @@ public class FrgAlbum extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
-            int position = viewHolder.getAdapterPosition();
-            Album album = albumViewModel.getAlbums().getValue().get(position);
-            System.out.println("jjjjj");
-            Toast.makeText(getActivity(), "Album id" + album.getId(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getContext(), FrmPhotoAlbum.class);
-            intent.putExtra("album", album);
-            startActivity(intent);
-        }
-    };
-
 
     public void setUserId(int userId) {
         this.userId = userId;

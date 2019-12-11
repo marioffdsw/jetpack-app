@@ -47,12 +47,12 @@ public class PhotoViewModel extends ViewModel {
         return error;
     }
 
-    public void loadPosts(int userId) {
+    public void loadPhotos(int albumId) {
         Retrofit retrofitInstance = RetrofitClientInstance.getRetrofitInstance();
         PhotoInterface pett = retrofitInstance.create(PhotoInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll( "json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", userId);
+        Call<ResponseBody> call = pett.getAll( "json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", albumId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseBody) {

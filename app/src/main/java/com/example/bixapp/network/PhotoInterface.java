@@ -7,10 +7,10 @@ import retrofit2.http.Query;
 
 public interface PhotoInterface {
 
-    @GET("albums")
+    @GET("photos")
     Call<ResponseBody> getAll(@Query("_format") String format,
                               @Query("access-token") String token,
-                              @Query("user_id") int userId
+                              @Query("album_id") int albumId
     );
 
 }
