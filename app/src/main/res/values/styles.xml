@@ -31,4 +31,10 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style
+        name="dialog_animation_fade" >
+        <item name="android:windowEnterAnimation">@anim/in_right_left</item>
+        <item name="android:windowExitAnimation">@anim/out_right_left</item>
+    </style>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.example.bixapp.views;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -88,6 +89,7 @@ public class FrmUsers extends AppCompatActivity {
             Intent intent = new Intent(FrmUsers.this, FrmUserTabs.class);
             intent.putExtra("user", user);
             startActivity(intent);
+            FrmUsers.this.overridePendingTransition(R.anim.in_right_left, R.anim.out_right_left);
         }
     };
 

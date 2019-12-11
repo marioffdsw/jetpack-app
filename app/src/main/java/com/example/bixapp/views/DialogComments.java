@@ -83,6 +83,16 @@ public class DialogComments extends DialogFragment {
         savedInstanceState.putInt("postId", postId);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() == null) {
+            return;
+        }
+        getDialog().getWindow().setWindowAnimations(
+                R.style.dialog_animation_fade);
+    }
+
     public void setPostId(int postId) {
         this.postId = postId;
     }
