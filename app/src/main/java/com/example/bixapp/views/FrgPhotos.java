@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bixapp.R;
@@ -31,7 +32,6 @@ public class FrgPhotos extends Fragment {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Toast.makeText(getActivity(), "imagen click", Toast.LENGTH_SHORT).show();
             Photo photo = photoViewModel.getPhotos().getValue().get(i);
             Intent intent = new Intent(getContext(), FrmPhotoAlbum.class);
             intent.putExtra("photo", photo);
@@ -48,12 +48,13 @@ public class FrgPhotos extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.frg_photos, container, false);
+        final ProgressBar pbar = view.findViewById(R.id.pbar_photos);
+
         gvPhotos = view.findViewById(R.id.gvPhotos);
 
         photoAdapter = new PhotoAdapter(this.getActivity());
         gvPhotos.setAdapter(photoAdapter);
         gvPhotos.setOnItemClickListener(onItemClickListener);
-
 
         photoViewModel = new PhotoViewModel();
         photoViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
@@ -61,6 +62,13 @@ public class FrgPhotos extends Fragment {
             @Override
             public void onChanged(@Nullable List<Photo> photos) {
                 photoAdapter.setPhotos(photos);
+            }
+        });
+
+        photoViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                pbar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             }
         });
 

@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.example.bixapp.R;
 import com.example.bixapp.adapters.PostAdapter;
@@ -24,8 +24,8 @@ public class FrgPost extends Fragment {
 
     private RecyclerView rvPost;
     private PostAdapter postAdapter;
-    private boolean isLoading = false;
     private int userId;
+    private ProgressBar pbar;
 
     private PostViewModel postViewModel;
 
@@ -37,10 +37,30 @@ public class FrgPost extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frg_post, container, false);
+        pbar = view.findViewById(R.id.pbar_posts);
         rvPost = view.findViewById(R.id.rvPosts);
         rvPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvPost.setHasFixedSize(true);
 
+        return view;
+    }
+
+    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+            int position = viewHolder.getAdapterPosition();
+            Post post = postViewModel.getPosts().getValue().get(position);
+            DialogComments dialogComments = new DialogComments();
+            dialogComments.setPostId(post.getId());
+            dialogComments.show(getFragmentManager(), "COMMENTS");
+        }
+    };
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         postAdapter = new PostAdapter(getResources(), getActivity());
         postAdapter.setOnItemClickListener(onItemClickListener);
         rvPost.setAdapter(postAdapter);
@@ -53,31 +73,14 @@ public class FrgPost extends Fragment {
                 postAdapter.setUsers(posts);
             }
         });
+        postViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                pbar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            }
+        });
 
         postViewModel.loadPosts(userId);
-        return view;
-
-    }
-
-    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
-            int position = viewHolder.getAdapterPosition();
-            Post post = postViewModel.getPosts().getValue().get(position);
-            Toast.makeText(getActivity(), "hola" + post.getId(), Toast.LENGTH_SHORT).show();
-            DialogComments dialogComments = new DialogComments();
-            dialogComments.setPostId(post.getId());
-            dialogComments.show(getFragmentManager(), "COMMENTS");
-        }
-    };
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-//        mViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
-        // TODO: Use the ViewModel
     }
 
     public void setUserId(int userId) {

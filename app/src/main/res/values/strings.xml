@@ -106,5 +106,6 @@
     <string name="return_button">Regresar</string>
 
     <string name="title_activity_fullscreen_activitydel">FullscreenActivitydel</string>
+    <string name="no_result">No se encontraron resultados</string>
 
 </resources>

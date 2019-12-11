@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bixapp.R;
@@ -68,6 +69,7 @@ public class FrgAlbum extends Fragment {
         View view = inflater.inflate(R.layout.frg_album, container, false);
         this.container = container;
 
+        final ProgressBar pbar = view.findViewById(R.id.pbar_albums);
         rvAlbum = view.findViewById(R.id.rvAlbum);
         rvAlbum.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvAlbum.setHasFixedSize(true);
@@ -78,10 +80,17 @@ public class FrgAlbum extends Fragment {
 
         albumViewModel = new AlbumViewModel();
         albumViewModel = ViewModelProviders.of(this).get(AlbumViewModel.class);
+
         albumViewModel.getAlbums().observe(this, new Observer<List<Album>>() {
             @Override
             public void onChanged(@Nullable List<Album> album) {
                 albumAdapter.setUsers(album);
+            }
+        });
+        albumViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                pbar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -96,6 +105,13 @@ public class FrgAlbum extends Fragment {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        albumViewModel.clearData();
     }
 
 }

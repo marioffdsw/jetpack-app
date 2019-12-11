@@ -45,7 +45,6 @@ public class PhotoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,12 +56,10 @@ public class PhotoAdapter extends BaseAdapter {
 
         final Photo item = (Photo) getItem(position);
         img.setImageResource(R.drawable.ico_album);
-        System.out.println("xxxxxxxxx " + item.getTitle());
         title.setText(item.getTitle());
 
         Glide.with(context)
                 .load(item.getThumbnail())
-                .apply(RequestOptions.centerCropTransform())
                 .into(img);
 
         return view;

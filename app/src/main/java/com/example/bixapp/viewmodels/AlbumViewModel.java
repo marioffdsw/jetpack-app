@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -27,13 +28,20 @@ public class AlbumViewModel extends ViewModel {
 
     private MutableLiveData<List<Album>> albums;
     private MutableLiveData<ErrorResponse> error;
+    private MutableLiveData<Integer> page;
     private MutableLiveData<Boolean> isLoading;
+    private MutableLiveData<Integer> totalPages;
 
     public AlbumViewModel() {
         this.albums = new MutableLiveData<>();
         this.error = new MutableLiveData<>();
         this.isLoading = new MutableLiveData<>();
         this.isLoading.setValue(false);
+        this.page = new MutableLiveData<>();
+        this.totalPages = new MutableLiveData<>();
+
+        this.isLoading.setValue(false);
+        this.page.setValue(1);
     }
 
     public LiveData<List<Album>> getAlbums() {
@@ -65,7 +73,10 @@ public class AlbumViewModel extends ViewModel {
                         }.getType();
                         ApiResponse<List<Album>> response = gson.fromJson(responseJson, type);
 
-                        if (getAlbums().getValue() == null) {
+                        totalPages.setValue(response._meta.pageCount);
+
+                        if (page.getValue() == 1) {
+                            albums.setValue(new ArrayList<Album>());
                             albums.setValue(response.result);
                         } else {
                             List<Album> copy = getAlbums().getValue();
@@ -100,5 +111,10 @@ public class AlbumViewModel extends ViewModel {
                 isLoading.setValue(false);
             }
         });
+    }
+
+
+    public void clearData() {
+        albums.setValue(new ArrayList<Album>());
     }
 }

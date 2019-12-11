@@ -16,7 +16,7 @@ import java.util.List;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder> {
 
     private View.OnClickListener clickListener;
-    private List<Album> posts = new ArrayList<>();
+    private List<Album> albums = new ArrayList<>();
 
     public AlbumAdapter() {
     }
@@ -31,17 +31,17 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
     @Override
     public void onBindViewHolder(@NonNull AlbumHolder albumHolder, int position) {
-        Album currentAlbum = posts.get(position);
+        Album currentAlbum = albums.get(position);
         albumHolder.txtName.setText(currentAlbum.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return albums.size();
     }
 
     public void setUsers(List<Album> posts) {
-        this.posts = posts;
+        this.albums = posts;
         notifyDataSetChanged();
     }
 

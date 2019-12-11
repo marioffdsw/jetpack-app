@@ -104,9 +104,6 @@ public class UserViewModel extends ViewModel {
 
                         if (page.getValue() == 1) {
                             users.setValue(new ArrayList<User>());
-                            System.out.println("xxxxxxxxxxxxx " + users.getValue().size());
-                            System.out.println("aaaaaaaa " + response.result.size());
-
                             users.setValue(response.result);
                         } else {
                             List<User> copy = getUsers().getValue();
