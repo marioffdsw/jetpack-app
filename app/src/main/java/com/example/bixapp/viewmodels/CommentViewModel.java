@@ -4,9 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.bixapp.constants.Constants;
 import com.example.bixapp.model.ApiResponse;
-import com.example.bixapp.model.ErrorResponse;
 import com.example.bixapp.model.Comment;
+import com.example.bixapp.model.ErrorResponse;
 import com.example.bixapp.network.CommentInterface;
 import com.example.bixapp.network.RetrofitClientInstance;
 import com.google.gson.Gson;
@@ -51,7 +52,7 @@ public class CommentViewModel extends ViewModel {
         CommentInterface pett = retrofitInstance.create(CommentInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll("json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", userId);
+        Call<ResponseBody> call = pett.getAll("json", Constants.ACCESS_TOKEN, userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseBody) {

@@ -4,9 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.bixapp.model.Photo;
+import com.example.bixapp.constants.Constants;
 import com.example.bixapp.model.ApiResponse;
 import com.example.bixapp.model.ErrorResponse;
+import com.example.bixapp.model.Photo;
 import com.example.bixapp.network.PhotoInterface;
 import com.example.bixapp.network.RetrofitClientInstance;
 import com.google.gson.Gson;
@@ -14,7 +15,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -53,7 +53,7 @@ public class PhotoViewModel extends ViewModel {
         PhotoInterface pett = retrofitInstance.create(PhotoInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll( "json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", albumId);
+        Call<ResponseBody> call = pett.getAll("json", Constants.ACCESS_TOKEN, albumId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseBody) {

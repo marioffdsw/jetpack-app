@@ -38,8 +38,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(@NonNull PostHolder postHolder, int position) {
         Post currentPost = posts.get(position);
-        postHolder.txtName.setText(currentPost.getTitle());
-        postHolder.txtEmail.setText(currentPost.getBody());
+        postHolder.txtTitle.setText(currentPost.getTitle());
+        postHolder.txtBody.setText(currentPost.getBody());
     }
 
     @Override
@@ -53,14 +53,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     }
 
     class PostHolder extends RecyclerView.ViewHolder {
-        private TextView txtName;
-        private TextView txtEmail;
+        private TextView txtTitle;
+        private TextView txtBody;
 
 
         public PostHolder(@NonNull View itemView) {
             super(itemView);
-            txtName = itemView.findViewById(R.id.txtName);
-            txtEmail = itemView.findViewById(R.id.txtEmail);
+            txtTitle = itemView.findViewById(R.id.txtTitle);
+            txtBody = itemView.findViewById(R.id.txtBody);
             itemView.setTag(this);
             itemView.setOnClickListener(clickListener);
         }

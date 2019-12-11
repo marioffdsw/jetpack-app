@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.bixapp.constants.Constants;
 import com.example.bixapp.model.ErrorResponse;
 import com.example.bixapp.model.User;
 import com.example.bixapp.model.ApiResponse;
@@ -87,7 +88,7 @@ public class UserViewModel extends ViewModel {
         UserInterface pett = retrofitInstance.create(UserInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll("json", getPage().getValue(), "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", this.query.getValue());
+        Call<ResponseBody> call = pett.getAll("json", getPage().getValue(), Constants.ACCESS_TOKEN, this.query.getValue());
         call.enqueue(new Callback<ResponseBody>() {
 
             @Override

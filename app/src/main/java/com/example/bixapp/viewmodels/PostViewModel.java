@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.bixapp.constants.Constants;
 import com.example.bixapp.model.ApiResponse;
 import com.example.bixapp.model.ErrorResponse;
 import com.example.bixapp.model.Post;
@@ -51,7 +52,7 @@ public class PostViewModel extends ViewModel {
         PostInterface pett = retrofitInstance.create(PostInterface.class);
 
         isLoading.setValue(true);
-        Call<ResponseBody> call = pett.getAll("json", "kD9BK2GcPjswMEKCgeIvGutSfviZqTapKhm7", userId);
+        Call<ResponseBody> call = pett.getAll("json", Constants.ACCESS_TOKEN, userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> responseBody) {

@@ -15,20 +15,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtName"
+            android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingBottom="10dp"
+            android:textColor="@color/colorTitle"
+            android:textStyle="bold"
             tools:text="Contenido" />
 
         <TextView
-            android:id="@+id/txtEmail"
+            android:id="@+id/txtBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="tie"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="tie" />
 
     </LinearLayout>
 
