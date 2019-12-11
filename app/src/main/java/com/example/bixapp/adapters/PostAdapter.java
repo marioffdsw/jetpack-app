@@ -40,8 +40,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         Post currentPost = posts.get(position);
         postHolder.txtName.setText(currentPost.getTitle());
         postHolder.txtEmail.setText(currentPost.getBody());
-
-        //new DownloadImageTask(userHolder, currentUser).execute(avatar);
     }
 
     @Override

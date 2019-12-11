@@ -39,8 +39,12 @@ public class FrgAlbum extends Fragment {
             System.out.println("jjjjj");
             Toast.makeText(getActivity(), "Album id" + album.getId(), Toast.LENGTH_SHORT).show();
 
-            FrgPhotos nextFrag = new FrgPhotos();
+            FrgPhotos nextFrag = FrgPhotos.newInstance();
             nextFrag.setAlbumId(album.getId());
+
+
+
+            System.out.println(container);
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(container.getId(), nextFrag, "findThisFragment")
                     .addToBackStack(null)
@@ -93,4 +97,5 @@ public class FrgAlbum extends Fragment {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
 }

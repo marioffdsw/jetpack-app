@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.bixapp.R;
 import com.example.bixapp.views.FrgAlbum;
+import com.example.bixapp.views.FrgGallery;
 import com.example.bixapp.views.FrgPost;
 
 public class UserTabPagerAdapter extends FragmentPagerAdapter {
@@ -31,9 +32,9 @@ public class UserTabPagerAdapter extends FragmentPagerAdapter {
                 frgPost.setUserId(userId);
                 return frgPost;
             case 1:
-                FrgAlbum frgAlbum = FrgAlbum.newInstance();
-                frgAlbum.setUserId(userId);
-                return frgAlbum;
+                FrgGallery frgGallery = FrgGallery.newInstance();
+                frgGallery.setUserId(userId);
+                return frgGallery;
             default:
                 return null;
         }

@@ -18,6 +18,7 @@ import com.example.bixapp.adapters.PhotoAdapter;
 import com.example.bixapp.model.Photo;
 import com.example.bixapp.viewmodels.PhotoViewModel;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class FrgPhotos extends Fragment {
@@ -26,7 +27,7 @@ public class FrgPhotos extends Fragment {
     private PhotoAdapter photoAdapter;
     private PhotoViewModel photoViewModel;
     private int albumId;
-    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener(){
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -37,6 +38,7 @@ public class FrgPhotos extends Fragment {
             startActivity(intent);
         }
     };
+
     public static FrgPhotos newInstance() {
         return new FrgPhotos();
     }
@@ -49,6 +51,7 @@ public class FrgPhotos extends Fragment {
         gvPhotos = view.findViewById(R.id.gvPhotos);
 
         photoAdapter = new PhotoAdapter(this.getActivity());
+        gvPhotos.setAdapter(photoAdapter);
         gvPhotos.setOnItemClickListener(onItemClickListener);
 
 
@@ -56,20 +59,13 @@ public class FrgPhotos extends Fragment {
         photoViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
         photoViewModel.getPhotos().observe(this, new Observer<List<Photo>>() {
             @Override
-            public void onChanged(@Nullable List<Photo> photo) {
-                photoAdapter.setPhotos(photo);
+            public void onChanged(@Nullable List<Photo> photos) {
+                photoAdapter.setPhotos(photos);
             }
         });
 
-        gvPhotos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
-
+        gvPhotos.setOnItemClickListener(onItemClickListener);
         photoViewModel.loadPhotos(albumId);
-
 
         return view;
     }
