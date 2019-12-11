@@ -7,6 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         tools:layout_editor_absoluteX="39dp"
         tools:layout_editor_absoluteY="69dp">
 
@@ -31,8 +32,7 @@
             android:drawableTop="@drawable/ico_ghost"
             android:text="@string/no_result"
             android:textColor="@color/colorHint"
-            tools:visibility="gone">
-        </TextView>
+            tools:visibility="gone"></TextView>
     </RelativeLayout>
 
 

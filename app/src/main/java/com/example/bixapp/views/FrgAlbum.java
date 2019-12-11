@@ -2,10 +2,11 @@ package com.example.bixapp.views;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.bixapp.R;
 import com.example.bixapp.adapters.AlbumAdapter;
+import com.example.bixapp.adapters.RvDividerItemDecoration;
 import com.example.bixapp.model.Album;
 import com.example.bixapp.viewmodels.AlbumViewModel;
 
@@ -26,9 +27,7 @@ public class FrgAlbum extends Fragment {
 
     private RecyclerView rvAlbum;
     private AlbumAdapter albumAdapter;
-    private boolean isLoading = false;
     private int userId;
-    private Context context;
     private ViewGroup container;
 
     private AlbumViewModel albumViewModel;
@@ -38,16 +37,10 @@ public class FrgAlbum extends Fragment {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
             Album album = albumViewModel.getAlbums().getValue().get(position);
-            System.out.println("jjjjj");
-            Toast.makeText(getActivity(), "Album id" + album.getId(), Toast.LENGTH_SHORT).show();
-
-            FrgPhotos nextFrag = FrgPhotos.newInstance();
-            nextFrag.setAlbumId(album.getId());
-
-
-            System.out.println(container);
+            FrgPhotos frgPhotos = FrgPhotos.newInstance();
+            frgPhotos.setAlbumId(album.getId());
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(container.getId(), nextFrag, "findThisFragment")
+                    .replace(container.getId(), frgPhotos, "FRG_PHOTO")
                     .addToBackStack(null)
                     .commit();
 
@@ -66,7 +59,7 @@ public class FrgAlbum extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frg_album, container, false);
+        View view = inflater.inflate(R.layout.frg_albums, container, false);
         this.container = container;
 
         final ProgressBar pbar = view.findViewById(R.id.pbar_albums);
@@ -75,6 +68,9 @@ public class FrgAlbum extends Fragment {
         rvAlbum = view.findViewById(R.id.rvAlbum);
         rvAlbum.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvAlbum.setHasFixedSize(true);
+        rvAlbum.setHasFixedSize(true);
+        rvAlbum.setItemAnimator(new DefaultItemAnimator());
+        rvAlbum.addItemDecoration(new RvDividerItemDecoration(this.getActivity(), DividerItemDecoration.VERTICAL, 36));
 
         albumAdapter = new AlbumAdapter();
         albumAdapter.setOnItemClickListener(onItemClickListener);

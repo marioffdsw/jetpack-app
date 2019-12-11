@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.bixapp.R;
 import com.example.bixapp.adapters.PostAdapter;
+import com.example.bixapp.adapters.RvDividerItemDecoration;
 import com.example.bixapp.model.Post;
 import com.example.bixapp.viewmodels.PostViewModel;
 
@@ -44,7 +47,8 @@ public class FrgPost extends Fragment {
         txtEmpty = view.findViewById(R.id.txtEmpty);
         rvPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvPost.setHasFixedSize(true);
-
+        rvPost.setItemAnimator(new DefaultItemAnimator());
+        rvPost.addItemDecoration(new RvDividerItemDecoration(this.getActivity(), DividerItemDecoration.VERTICAL, 36));
         return view;
     }
 

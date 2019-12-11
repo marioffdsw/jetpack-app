@@ -11,6 +11,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.bixapp.R;
 import com.example.bixapp.adapters.DialogAdapter;
@@ -21,26 +23,26 @@ import java.util.List;
 
 public class DialogComments extends DialogFragment {
 
-    private List<Comment> comments;
     private ListView lvComments;
     private CommentViewModel commentViewModel;
+    private DialogAdapter adapter;
     private int postId;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dlg_comments, null);
+        final ProgressBar pbar = view.findViewById(R.id.pbar_comments);
+        final TextView txtEmpty = view.findViewById(R.id.txtEmpty);
+
         lvComments = view.findViewById(R.id.lvComments);
 
         if (savedInstanceState != null) {
             postId = savedInstanceState.getInt("id");
         }
 
-
-        final DialogAdapter adapter = new DialogAdapter(this.getActivity().getApplicationContext());
-
-        //lvComments.setAdapter(adapter);
-
+        adapter = new DialogAdapter(this.getActivity().getApplicationContext());
+        lvComments.setAdapter(adapter);
 
         commentViewModel = new CommentViewModel();
         commentViewModel = ViewModelProviders.of(this).get(CommentViewModel.class);
@@ -48,13 +50,19 @@ public class DialogComments extends DialogFragment {
             @Override
             public void onChanged(@Nullable List<Comment> comments) {
                 adapter.setComments(comments);
-                lvComments.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
             }
         });
 
         commentViewModel.loadComments(postId);
 
+        commentViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                pbar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                txtEmpty.setVisibility(!isLoading && commentViewModel.getComments().getValue().isEmpty() ?
+                        View.VISIBLE : View.GONE);
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);

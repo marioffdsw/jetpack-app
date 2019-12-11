@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bixapp.R;
+import com.example.bixapp.adapters.RvDividerItemDecoration;
 import com.example.bixapp.adapters.UserAdapter;
 import com.example.bixapp.model.User;
 import com.example.bixapp.viewmodels.UserViewModel;
@@ -45,8 +48,10 @@ public class FrmUsers extends AppCompatActivity {
 
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         rvUser.setHasFixedSize(true);
+        rvUser.setItemAnimator(new DefaultItemAnimator());
+        rvUser.addItemDecoration(new RvDividerItemDecoration(this, DividerItemDecoration.VERTICAL, 36));
 
-        userAdapter = new UserAdapter(getResources(), this);
+        userAdapter = new UserAdapter(this);
         userAdapter.setOnItemClickListener(onItemClickListener);
         rvUser.setAdapter(userAdapter);
 

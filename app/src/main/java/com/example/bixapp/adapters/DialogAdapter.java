@@ -11,19 +11,17 @@ import android.widget.TextView;
 import com.example.bixapp.R;
 import com.example.bixapp.model.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DialogAdapter extends BaseAdapter {
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 
     private List<Comment> comments;
     private Context context;
 
     public DialogAdapter(Context context) {
         this.context = context;
+        this.comments = new ArrayList<>();
     }
 
     @Override
@@ -57,5 +55,10 @@ public class DialogAdapter extends BaseAdapter {
 
         }
         return view;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+        notifyDataSetChanged();
     }
 }

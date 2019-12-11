@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="69dp">
+        tools:layout_editor_absoluteY="69dp"
+        android:padding="10dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPosts"
