@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,34 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <GridView
-            android:id="@+id/gvPhotos"
+        <ListView
+            android:id="@+id/lvPhotos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:gravity="center"
-            android:horizontalSpacing="10dp"
-            android:numColumns="3"
-            android:padding="10dp"
-            android:verticalSpacing="10dp" />
+            android:padding="10dp" />
 
         <ProgressBar
             android:id="@+id/pbar_photos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/gvPhotos"
+            android:layout_alignBottom="@id/lvPhotos"
             android:paddingBottom="10dp" />
 
         <TextView
-            android:id="@+id/empty_list"
+            android:id="@+id/txtEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:drawableTop="@drawable/ico_ghost"
             android:text="@string/no_result"
-            android:textColor="@color/colorHint">
-
+            android:textColor="@color/colorHint"
+            tools:visibility="gone">
         </TextView>
 
     </RelativeLayout>

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bixapp.R;
@@ -31,9 +32,11 @@ public class FrmUsers extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frm_users);
+        setContentView(R.layout.frm_users);
 
         final ProgressBar pbarUsers = findViewById(R.id.pbar_users);
+        final TextView txtEmpty = findViewById(R.id.txtEmpty);
+
         svUser = findViewById(R.id.svUser);
         rvUser = findViewById(R.id.rvUsers);
 
@@ -60,6 +63,8 @@ public class FrmUsers extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
                 pbarUsers.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                txtEmpty.setVisibility(!isLoading && userViewModel.getUsers().getValue().isEmpty() ?
+                        View.VISIBLE : View.GONE);
             }
         });
 
@@ -69,15 +74,11 @@ public class FrmUsers extends AppCompatActivity {
     }
 
 
-
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
-            // viewHolder.getItemId();
-            // viewHolder.getItemViewType();
-            // viewHolder.itemView;
             User user = userViewModel.getUsers().getValue().get(position);
             Intent intent = new Intent(FrmUsers.this, FrmUserTabs.class);
             intent.putExtra("user", user);
@@ -91,7 +92,7 @@ public class FrmUsers extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String oldQuery = userViewModel.getQuery().getValue();
-                if(query != oldQuery){
+                if (query != oldQuery) {
                     userViewModel.resetPage();
                 }
                 userViewModel.setQuery(query);

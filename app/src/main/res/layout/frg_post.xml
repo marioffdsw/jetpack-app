@@ -22,6 +22,18 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/rvPosts"
             android:paddingBottom="10dp" />
+
+        <TextView
+            android:id="@+id/txtEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableTop="@drawable/ico_ghost"
+            android:text="@string/no_result"
+            android:textColor="@color/colorHint"
+            tools:visibility="gone">
+        </TextView>
+
     </RelativeLayout>
 
 

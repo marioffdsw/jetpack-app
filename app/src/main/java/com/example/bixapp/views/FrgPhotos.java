@@ -10,21 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.bixapp.R;
 import com.example.bixapp.adapters.PhotoAdapter;
 import com.example.bixapp.model.Photo;
 import com.example.bixapp.viewmodels.PhotoViewModel;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 public class FrgPhotos extends Fragment {
 
-    private GridView gvPhotos;
+    private ListView lvPhotos;
+
     private PhotoAdapter photoAdapter;
     private PhotoViewModel photoViewModel;
     private int albumId;
@@ -49,12 +49,13 @@ public class FrgPhotos extends Fragment {
 
         View view = inflater.inflate(R.layout.frg_photos, container, false);
         final ProgressBar pbar = view.findViewById(R.id.pbar_photos);
+        final TextView txtEmpty = view.findViewById(R.id.txtEmpty);
 
-        gvPhotos = view.findViewById(R.id.gvPhotos);
+        lvPhotos = view.findViewById(R.id.lvPhotos);
 
         photoAdapter = new PhotoAdapter(this.getActivity());
-        gvPhotos.setAdapter(photoAdapter);
-        gvPhotos.setOnItemClickListener(onItemClickListener);
+        lvPhotos.setAdapter(photoAdapter);
+        lvPhotos.setOnItemClickListener(onItemClickListener);
 
         photoViewModel = new PhotoViewModel();
         photoViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
@@ -69,10 +70,12 @@ public class FrgPhotos extends Fragment {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
                 pbar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                txtEmpty.setVisibility(!isLoading && photoViewModel.getPhotos().getValue().isEmpty() ?
+                        View.VISIBLE : View.GONE);
             }
         });
 
-        gvPhotos.setOnItemClickListener(onItemClickListener);
+        lvPhotos.setOnItemClickListener(onItemClickListener);
         photoViewModel.loadPhotos(albumId);
 
         return view;

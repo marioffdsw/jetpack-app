@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.bixapp.R;
 import com.example.bixapp.adapters.PostAdapter;
@@ -26,6 +27,7 @@ public class FrgPost extends Fragment {
     private PostAdapter postAdapter;
     private int userId;
     private ProgressBar pbar;
+    private TextView txtEmpty;
 
     private PostViewModel postViewModel;
 
@@ -39,6 +41,7 @@ public class FrgPost extends Fragment {
         View view = inflater.inflate(R.layout.frg_post, container, false);
         pbar = view.findViewById(R.id.pbar_posts);
         rvPost = view.findViewById(R.id.rvPosts);
+        txtEmpty = view.findViewById(R.id.txtEmpty);
         rvPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvPost.setHasFixedSize(true);
 
@@ -64,7 +67,6 @@ public class FrgPost extends Fragment {
         postAdapter = new PostAdapter(getResources(), getActivity());
         postAdapter.setOnItemClickListener(onItemClickListener);
         rvPost.setAdapter(postAdapter);
-
         postViewModel = new PostViewModel();
         postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
         postViewModel.getPosts().observe(this, new Observer<List<Post>>() {
@@ -77,6 +79,8 @@ public class FrgPost extends Fragment {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
                 pbar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                txtEmpty.setVisibility(!isLoading && postViewModel.getPosts().getValue().isEmpty() ?
+                        View.VISIBLE : View.GONE);
             }
         });
 

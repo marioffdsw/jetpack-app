@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bixapp.R;
@@ -44,7 +45,6 @@ public class FrgAlbum extends Fragment {
             nextFrag.setAlbumId(album.getId());
 
 
-
             System.out.println(container);
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(container.getId(), nextFrag, "findThisFragment")
@@ -70,6 +70,8 @@ public class FrgAlbum extends Fragment {
         this.container = container;
 
         final ProgressBar pbar = view.findViewById(R.id.pbar_albums);
+        final TextView txtEmpty = view.findViewById(R.id.txtEmpty);
+
         rvAlbum = view.findViewById(R.id.rvAlbum);
         rvAlbum.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvAlbum.setHasFixedSize(true);
@@ -83,14 +85,17 @@ public class FrgAlbum extends Fragment {
 
         albumViewModel.getAlbums().observe(this, new Observer<List<Album>>() {
             @Override
-            public void onChanged(@Nullable List<Album> album) {
-                albumAdapter.setUsers(album);
+            public void onChanged(@Nullable List<Album> albums) {
+                albumAdapter.setUsers(albums);
             }
         });
         albumViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
                 pbar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                txtEmpty.setVisibility(!isLoading && albumViewModel.getAlbums().getValue().isEmpty() ?
+                        View.VISIBLE : View.GONE);
+
             }
         });
 

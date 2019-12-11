@@ -43,7 +43,7 @@ public class UserViewModel extends ViewModel {
         this.totalPages = new MutableLiveData<>();
         this.wasReset = new MutableLiveData<>();
 
-        this.isLoading.setValue(false);
+        this.isLoading.setValue(true);
         this.page.setValue(1);
         this.query.setValue(null);
         this.wasReset.setValue(false);

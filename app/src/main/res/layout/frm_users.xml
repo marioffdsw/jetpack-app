@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.FrmUsers">
 
     <RelativeLayout
@@ -18,17 +18,14 @@
             defaultQueryHint="Buscar..."
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            >
-        </android.support.v7.widget.SearchView>
+            android:layout_alignParentTop="true"></android.support.v7.widget.SearchView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvUsers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/row_user"
             android:layout_below="@id/svUser"
-            />
+            tools:listitem="@layout/row_user" />
 
         <ProgressBar
             android:id="@+id/pbar_users"
@@ -36,6 +33,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:paddingBottom="10dp" />
+
+        <TextView
+            android:id="@+id/txtEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableTop="@drawable/ico_ghost"
+            android:text="@string/no_result"
+            android:textColor="@color/colorHint"
+            tools:visibility="gone"></TextView>
+
     </RelativeLayout>
 
 
